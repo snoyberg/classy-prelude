@@ -8,7 +8,6 @@ module ClassyPrelude
       module CorePrelude
       -- * Standard
       -- ** Monoid
-    , concat
     , empty
     , append
     , (++)
@@ -20,6 +19,7 @@ module ClassyPrelude
       -- * Non-standard
       -- ** List-like classes
     , map
+    , concat
     , concatMap
     , filter
     , find
@@ -57,6 +57,8 @@ module ClassyPrelude
     , reverse
     , readMay
     , replicate
+    , intercalate
+    , intersperse
     , encodeUtf8
     , decodeUtf8
     , subsequences
@@ -142,10 +144,6 @@ readMay a =
 repack :: (CanPack a i, CanPack b i) => a -> b
 repack = pack . unpack
 
-concat :: Monoid m => [m] -> m
-concat = mconcat
-{-# INLINE concat #-}
-
 append :: Monoid m => m -> m -> m
 append = mappend
 {-# INLINE append #-}
@@ -158,6 +156,9 @@ infixr 5  ++
 (++) :: Monoid m => m -> m -> m
 (++) = mappend
 {-# INLINE (++) #-}
+
+intercalate :: (CanConcat c i, CanIntersperse c i) => i -> c -> i
+intercalate xs xss = concat (intersperse xs xss)
 
 asByteString :: ByteString -> ByteString
 asByteString = id

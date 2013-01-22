@@ -7,10 +7,15 @@ module ClassyPrelude.Vector
     ) where
 
 import qualified Prelude
-import Prelude ((.))
+import Prelude ((.), ($))
 import ClassyPrelude.Classes
 import Data.Vector (Vector)
 import qualified Data.Vector as V
+
+import Data.Monoid (Monoid)
+import qualified Data.Monoid as Monoid
+import Data.Foldable (Foldable)
+import qualified Data.Foldable as Foldable
 
 instance CanMapFunc (Vector a) (Vector b) a b where
     mapFunc = V.map
@@ -29,6 +34,13 @@ instance CanNull (Vector a) where
 instance CanPack (Vector a) a where
     pack = V.fromList
     unpack = V.toList
+instance CanIntersperse (Vector a) a where
+    -- | Implementation is a rip off from <http://hackage.haskell.org/packages/archive/base/latest/doc/html/src/Data-List.html#intersperse>.
+    intersperse _ xs | null xs = V.empty
+    intersperse sep xs = V.cons (V.head xs) $ prependToAll sep $ V.unsafeTail xs
+      where
+        prependToAll _ xs | null xs = V.empty
+        prependToAll sep xs = V.cons sep $ V.cons (V.head xs) $ prependToAll sep $ V.unsafeTail xs
 instance Prelude.Monad m => CanMapMFunc (Vector i) (m (Vector o)) m i o where
     mapMFunc = V.mapM
 instance CanMapM_Func (Vector a) a where
@@ -60,3 +72,5 @@ instance CanReplicateM (Vector a) a Prelude.Int where
 instance CanFind (Vector a) a where
     find = V.find
     
+instance (Monoid m) => CanConcat (Vector m) m where
+    concat = Foldable.fold

@@ -10,6 +10,9 @@ import ClassyPrelude.Classes
 import qualified Data.List
 import qualified Control.Monad
 
+import Data.Monoid (Monoid)
+import qualified Data.Monoid as Monoid
+
 instance CanMapFunc [a] [b] a b where
     mapFunc = Prelude.map
 instance CanConcatMapFunc [a] [b] a [b] where
@@ -29,6 +32,8 @@ instance CanPack [a] a where
     unpack = Prelude.id
     subsequences = Data.List.subsequences
     permutations = Data.List.permutations
+instance CanIntersperse [a] a where
+    intersperse = Data.List.intersperse
 instance Prelude.Monad m => CanMapMFunc [i] (m [o]) m i o where
     mapMFunc = Prelude.mapM
 instance CanMapM_Func [a] a where
@@ -82,3 +87,5 @@ instance CanReplicateM [a] a Prelude.Int where
 instance CanFind [a] a where
     find = Data.List.find
     
+instance (Monoid m) => CanConcat [m] m where
+    concat = Monoid.mconcat
