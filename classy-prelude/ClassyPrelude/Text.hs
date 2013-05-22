@@ -12,6 +12,7 @@ import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Data.Text.Encoding.Error as Text
 import qualified Data.Text.IO as Text
+import qualified Filesystem.Path.CurrentOS as FilePath
 
 
 instance CanMap Text Text Char Char where
@@ -42,6 +43,12 @@ instance CanIntersperse Text Char where
 instance CanStripPrefix Text where
     stripPrefix = Text.stripPrefix
     isPrefixOf = Text.isPrefixOf
+
+instance CanReadFile Text where
+    readFile = liftIO . Text.readFile . FilePath.encodeString
+
+instance CanWriteFile Text where
+    writeFile fp = liftIO . Text.writeFile (FilePath.encodeString fp)
 
 instance CanBreak Text Char where
     break = Text.break

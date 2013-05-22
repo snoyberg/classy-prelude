@@ -12,6 +12,7 @@ import qualified Data.Text.Lazy as LText
 import qualified Data.Text.Lazy.IO as LText
 import qualified Data.Text.Lazy.Encoding as LText
 import qualified Data.Text.Encoding.Error as Text
+import qualified Filesystem.Path.CurrentOS as FilePath
 
 
 instance CanMap LText LText Char Char where
@@ -39,6 +40,12 @@ instance CanIntersperse LText Char where
 instance CanStripPrefix LText where
     stripPrefix = LText.stripPrefix
     isPrefixOf = LText.isPrefixOf
+
+instance CanReadFile LText where
+    readFile = liftIO . LText.readFile . FilePath.encodeString
+
+instance CanWriteFile LText where
+    writeFile fp = liftIO . LText.writeFile (FilePath.encodeString fp)
 
 instance CanBreak LText Char where
     break = LText.break
