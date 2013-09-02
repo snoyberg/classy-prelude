@@ -13,10 +13,6 @@ import qualified Data.Text.Lazy.IO as LText
 import qualified Data.Text.Lazy.Encoding as LText
 import qualified Data.Text.Encoding.Error as Text
 
-
-instance CanMap LText LText Char Char where
-    map = LText.map
-
 instance CanConcatMap LText LText Char LText where
     concatMap = LText.concatMap
 

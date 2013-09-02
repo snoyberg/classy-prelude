@@ -13,10 +13,6 @@ import qualified Data.Text.Encoding as Text
 import qualified Data.Text.Encoding.Error as Text
 import qualified Data.Text.IO as Text
 
-
-instance CanMap Text Text Char Char where
-    map = Text.map
-
 instance CanConcatMap Text Text Char Text where
     concatMap = Text.concatMap
 

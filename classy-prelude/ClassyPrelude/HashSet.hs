@@ -11,10 +11,6 @@ import ClassyPrelude.Classes
 import qualified Data.HashSet as HashSet
 import qualified Control.Monad as Monad
 
-
-instance (Eq b, Hashable b) => CanMap (HashSet a) (HashSet b) a b where
-    map = HashSet.map
-    
 instance CanLength (HashSet x) Int where
     length = HashSet.size
 

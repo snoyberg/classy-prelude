@@ -8,10 +8,11 @@ module ClassyPrelude.Classes where
 
 import CorePrelude
 import qualified Data.List as List
+import qualified Control.Lens.Each as Each
+import qualified Control.Lens as Lens
 
-
-class CanMap ci co i o | ci -> i, co -> o, ci o -> co, co i -> ci where
-    map :: (i -> o) -> ci -> co
+map :: Each.Each Lens.Mutator s t a b => (a -> b) -> s -> t
+map = Lens.over Each.each
 
 class CanConcatMap ci co i o | ci -> i, co -> o, ci o -> co, co i -> ci where
     concatMap :: (i -> o) -> ci -> co

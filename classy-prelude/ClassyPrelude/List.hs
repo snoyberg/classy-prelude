@@ -11,10 +11,6 @@ import qualified Control.Monad as Monad
 import qualified Data.Monoid as Monoid
 import qualified Data.Set as Set
 
-
-instance CanMap [a] [b] a b where
-    map = List.map
-
 instance CanConcatMap [a] [b] a [b] where
     concatMap = List.concatMap
 

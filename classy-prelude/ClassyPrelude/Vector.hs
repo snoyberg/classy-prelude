@@ -11,10 +11,6 @@ import ClassyPrelude.Classes
 import qualified Data.Foldable as Foldable
 import qualified Data.Vector as Vector
 
-
-instance CanMap (Vector a) (Vector b) a b where
-    map = Vector.map
-
 instance CanConcatMap (Vector a) (Vector b) a (Vector b) where
     concatMap = Vector.concatMap
 

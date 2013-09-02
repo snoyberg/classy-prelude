@@ -12,10 +12,6 @@ import qualified Data.ByteString as ByteString
 import qualified Filesystem.Path.CurrentOS as FilePath
 import qualified Data.ByteString.Lazy as LByteString
 
-
-instance CanMap LByteString LByteString Word8 Word8 where
-    map = LByteString.map
-
 instance CanConcatMap LByteString LByteString Word8 LByteString where
     concatMap = LByteString.concatMap
 

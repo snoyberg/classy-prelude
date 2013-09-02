@@ -15,10 +15,6 @@ import qualified Data.Traversable as Traversable
 import qualified Data.Sequence as Seq
 import Data.Sequence (Seq, (<|), (|>), ViewL(..), viewl, ViewR(..), viewr)
 
-
-instance CanMap (Seq a) (Seq b) a b where
-    map = Monad.fmap
-
 instance CanConcatMap (Seq a) (Seq b) a (Seq b) where
     concatMap = (Monad.=<<)
 

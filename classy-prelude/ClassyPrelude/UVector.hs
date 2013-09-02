@@ -10,9 +10,6 @@ import CorePrelude
 import ClassyPrelude.Classes
 import qualified Data.Vector.Unboxed as UVector
 
-instance (Unbox a, Unbox b) => CanMap (UVector a) (UVector b) a b where
-    map = UVector.map
-
 instance (Unbox a, Unbox b) => CanConcatMap (UVector a) (UVector b) a (UVector b) where
     concatMap = UVector.concatMap
 

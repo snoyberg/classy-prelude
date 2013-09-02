@@ -17,6 +17,8 @@ import Data.Maybe (isJust)
 import Data.Functor.Identity (runIdentity)
 import Control.Concurrent (throwTo, threadDelay, forkIO)
 import Control.Exception (throw)
+import qualified Control.Lens as Lens
+import qualified Control.Lens.Each as Each
 
 dictionaryProps
     :: ( CanInsertVal a Int Char
@@ -42,6 +44,7 @@ dictionaryProps dummy = do
     prop "lookup k (delete k c) == Nothing" $ \k c ->
         lookup k (delete k c`asTypeOf` dummy) == Nothing
 
+{-
 mapProps :: ( CanPack a i
             , CanPack b j
             , Eq a
@@ -59,6 +62,7 @@ mapProps :: ( CanPack a i
          -> (i -> j)
          -> (j -> k)
          -> Spec
+         -}
 mapProps dummy f g = do
     prop "map f c == pack (map f (unpack c))" $ \c ->
         map f (c `asTypeOf` dummy) == pack (map f (unpack c))
@@ -74,7 +78,7 @@ concatMapProps :: ( CanPack a i
             , Eq b
             , Show b
             , Arbitrary b
-            , CanMap a b i j
+            , Each.Each Lens.Mutator a b i j
             , CanConcatMap a b i js
             )
          => a
@@ -274,8 +278,8 @@ main = hspec $ do
         describe "list" $ mapProps (undefined :: [Int]) (+ 1) (+ 2)
         describe "Data.Vector" $ mapProps (undefined :: Vector Int) (+ 1) (+ 2)
         describe "Data.Vector.Unboxed" $ mapProps (undefined :: UVector Int) (+ 1) (+ 2)
-        describe "Data.Set" $ mapProps (undefined :: Set Int) (+ 1) (+ 2)
-        describe "Data.HashSet" $ mapProps (undefined :: HashSet Int) (+ 1) (+ 2)
+        --describe "Data.Set" $ mapProps (undefined :: Set Int) (+ 1) (+ 2)
+        --describe "Data.HashSet" $ mapProps (undefined :: HashSet Int) (+ 1) (+ 2)
         describe "Data.ByteString" $ mapProps (undefined :: ByteString) (+ 1) (+ 2)
         describe "Data.ByteString.Lazy" $ mapProps (undefined :: LByteString) (+ 1) (+ 2)
         describe "Data.Text" $ mapProps (undefined :: Text) succ succ

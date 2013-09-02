@@ -11,10 +11,6 @@ import qualified Control.Monad as Monad
 import qualified Data.Foldable as Foldable
 import qualified Data.Traversable as Traversable
 
-
-instance CanMap (Maybe a) (Maybe b) a b where
-  map = Monad.fmap
-
 instance CanConcatMap (Maybe a) (Maybe b) a (Maybe b) where
   concatMap = (Monad.=<<)
 

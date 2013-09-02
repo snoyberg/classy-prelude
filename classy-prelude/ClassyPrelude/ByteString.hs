@@ -12,9 +12,6 @@ import qualified Data.ByteString as ByteString
 import qualified Filesystem.Path.CurrentOS as FilePath
 
 
-instance CanMap ByteString ByteString Word8 Word8 where
-    map = ByteString.map
-
 instance CanConcatMap ByteString ByteString Word8 ByteString where
     concatMap = ByteString.concatMap
 

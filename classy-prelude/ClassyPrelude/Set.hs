@@ -12,10 +12,6 @@ import qualified Control.Monad as Monad
 import qualified Data.Foldable as Foldable
 import qualified Data.Set as Set
 
-
-instance (Ord a, Ord b) => CanMap (Set a) (Set b) a b where
-    map = Set.map
-
 instance Ord a => CanFilter (Set a) a where
     filter = Set.filter
 
