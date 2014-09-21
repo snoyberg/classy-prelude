@@ -5,6 +5,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE PatternGuards #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 import Test.Hspec
 import Test.Hspec.QuickCheck
@@ -13,7 +14,6 @@ import Test.QuickCheck.Arbitrary
 import Prelude (asTypeOf, fromIntegral, undefined)
 import qualified Prelude
 import Control.Monad.Trans.Writer (tell, Writer, runWriter)
-import Data.Functor.Identity (runIdentity)
 import Control.Concurrent (throwTo, threadDelay, forkIO)
 import Control.Exception (throw)
 import qualified Data.Set as Set
@@ -404,6 +404,12 @@ main = hspec $ do
                     | Just DummyException <- fromException e -> return ()
                     | otherwise -> error "Expected a DummyException"
                 Right () -> error "Expected an exception" :: IO ()
+    describe "printing" $
+      it "compiles" $ ((do
+        print ("foo"::String)
+        putText "foo"
+        putTextLn "foo"
+        ) :: IO ())
 
 data DummyException = DummyException
     deriving (Show, Typeable)
