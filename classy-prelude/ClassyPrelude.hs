@@ -122,6 +122,8 @@ module ClassyPrelude
       -- ** IO
     , IOData (..)
     , print
+    , putText
+    , putTextLn
     , hClose
       -- ** FilePath
     , fpToString
@@ -168,7 +170,9 @@ import Data.IOData (IOData (..))
 import Control.Monad.Catch (MonadThrow (throwM))
 
 import Data.Vector.Instances ()
-import CorePrelude hiding (print, undefined, (<>), catMaybes)
+import CorePrelude hiding (print, putStrLn, undefined, (<>), catMaybes)
+import qualified CorePrelude
+import qualified Data.Text.IO
 import Data.ChunkedZip
 import qualified Data.Char as Char
 import Data.Sequences
@@ -381,6 +385,12 @@ asSVector = id
 print :: (Show a, MonadIO m) => a -> m ()
 print = liftIO . Prelude.print
 
+putText :: MonadIO m => Text -> m ()
+putText = liftIO . Data.Text.IO.putStr
+
+putTextLn :: (MonadIO m) => Text -> m ()
+putTextLn = liftIO . Data.Text.IO.putStrLn
+
 -- | Sort elements using the user supplied function to project something out of
 -- each element.
 -- Inspired by <http://hackage.haskell.org/packages/archive/base/latest/doc/html/GHC-Exts.html#v:sortWith>.
@@ -438,7 +448,7 @@ fpToTextWarn :: MonadIO m => FilePath -> m Text
 fpToTextWarn fp = case F.toText fp of
     Right ok -> return ok
     Left bad -> do
-        putStrLn $ pack $ "non-unicode filepath: " ++ F.encodeString fp
+        CorePrelude.putStrLn $ pack $ "non-unicode filepath: " ++ F.encodeString fp
         return bad
 
 -- | Translates a FilePath to a Text
