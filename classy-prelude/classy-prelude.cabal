@@ -41,6 +41,7 @@ library
                      , mutable-containers >= 0.3 && < 0.4
                      , dlist >= 0.7
                      , transformers-base
+                     , monad-loops
   ghc-options:         -Wall -fno-warn-orphans
 
 test-suite test
