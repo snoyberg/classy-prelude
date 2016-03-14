@@ -18,6 +18,7 @@ module ClassyPrelude
     , module Control.Applicative
       -- ** Monad
     , module Control.Monad
+    , module Control.Monad.Loops
     , whenM
     , unlessM
       -- ** Mutable references
@@ -178,6 +179,7 @@ import Data.Functor
 import Control.Exception (assert)
 import Control.Exception.Enclosed
 import Control.Monad (when, unless, void, liftM, ap, forever, join, replicateM_, guard, MonadPlus (..), (=<<), (>=>), (<=<), liftM2, liftM3, liftM4, liftM5)
+import Control.Monad.Loops
 import Control.Concurrent.Lifted hiding (yield)
 import qualified Control.Concurrent.Lifted as Conc (yield)
 import Control.Concurrent.MVar.Lifted
