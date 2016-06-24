@@ -115,7 +115,7 @@ module ClassyPrelude
 
     , hashNub
     , ordNub
-    , ordNubBy
+    , ordNubOn
 
     , sortWith
     , compareLength
@@ -594,22 +594,17 @@ ordNub = go Set.empty
 -- | same behavior as 'Data.List.nubBy', but requires 'Ord' and is @O(n log n)@
 --
 -- <https://github.com/nh2/haskell-ordnub>
-ordNubBy :: (Ord b) => (a -> b) -> (a -> a -> Bool) -> [a] -> [a]
-ordNubBy p f = go Map.empty
-  -- When removing duplicates, the first function assigns the input to a bucket,
-  -- the second function checks whether it is already in the bucket (linear search).
+ordNubOn :: (Eq a, Ord b) => (a -> b) -> [a] -> [a]
+ordNubOn p = go Map.empty
+  -- When removing duplicates, p assigns inputs to buckets.
+  -- The Eq constraint is used to check whether an item already exists in a bucket.
   where
     go _ []     = []
     go m (x:xs) = let b = p x in case b `Map.lookup` m of
                     Nothing     -> x : go (Map.insert b [x] m) xs
                     Just bucket
-                      | elem_by f x bucket -> go m xs
+                      | elem x bucket -> go m xs
                       | otherwise          -> x : go (Map.insert b (x:bucket) m) xs
-
-    -- From the Data.List source code.
-    elem_by :: (a -> a -> Bool) -> a -> [a] -> Bool
-    elem_by _  _ []     = False
-    elem_by eq y (x:xs) = y `eq` x || elem_by eq y xs
 
 -- | Generalized version of 'STM.atomically'.
 atomically :: MonadIO m => STM a -> m a
